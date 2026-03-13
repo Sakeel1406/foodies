@@ -14,14 +14,7 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 
 // CORS CONFIGURATION
-app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "https://foodies-frontend-qe7j.onrender.com",
-        "https://foodies-pulb.onrender.com"
-    ],
-    credentials: true
-}));
+app.use(cors());
 
 // DB Connection
 connectDB();
