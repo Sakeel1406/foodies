@@ -15,9 +15,11 @@ app.use(express.json());
 
 // CORS CONFIGURATION
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "token", "Authorization"],
+    origin: [
+        "http://localhost:5173",
+        "https://foodies-frontend-qe7j.onrender.com",
+        "https://foodies-pulb.onrender.com"
+    ],
     credentials: true
 }));
 
