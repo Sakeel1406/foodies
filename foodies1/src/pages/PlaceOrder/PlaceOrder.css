@@ -1,0 +1,170 @@
+
+.place-order{
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 70px;
+    margin-top: 100px;
+}
+
+
+.place-order-left{
+    width: 100%;
+   
+    max-width: 650px; 
+}
+.place-order-left .title{
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: rgb(39, 94, 109);
+}
+
+
+.place-order-left input{
+    margin-bottom: 15px;
+    width: 80%; 
+    padding: 10px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    outline-color: rgb(39, 94, 109);
+}
+
+
+.place-order-left input {
+    
+    padding: 10px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    outline-color: rgb(39, 94, 109);
+    margin-bottom: 15px;
+    width: 100%; 
+}
+
+
+.place-order-left .multi-fields {
+    display: flex;
+    gap: 10px;
+    width: 105%;
+    margin-bottom: 15px; 
+    margin-left: 1px;
+    margin-right: 60px;
+}
+
+
+.place-order-left.fields{
+    margin-bottom: 15px; 
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+
+.place-order-left .multi-fields input {
+    flex: 1; 
+    width: 200px !important; 
+    min-width: 0; 
+    margin-bottom: 0px !important;
+    margin-left: 0px; 
+    margin-right: 30px;
+}
+
+
+.place-order-left .fields {
+    margin-bottom: 15px; 
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.place-order-left input::placeholder {
+  color: rgb(39, 94, 109); 
+  opacity: 1;
+}
+
+
+.place-order-left input::-webkit-input-placeholder {
+  color: rgb(39, 94, 109);
+  opacity: 1;
+}
+
+
+.place-order-left input:-moz-placeholder {
+  color: rgb(39, 94, 109);
+  opacity: 1;
+}
+
+
+.place-order-left input:-ms-input-placeholder {
+  color: rgb(39, 94, 109);
+  opacity: 1;
+}
+
+
+.place-order-right{
+    
+    width: 80%; 
+    max-width: max(40%); 
+    padding: 80px; 
+    margin-top: 0px;
+    margin-left: 50px;
+    margin-right: 20px;
+}
+
+
+.place-order .cart-total button{
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+.place-order button:hover{
+    transform: scale(1.06);
+}
+
+@media (max-width: 1050px) {
+    .place-order {
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .place-order-left {
+        max-width: 500px;
+    }
+
+    .place-order-right {
+        max-width: 40%;
+        padding: 40px; 
+        margin-left: 0;
+    }
+}
+@media (max-width: 768px) {
+    .place-order {
+        flex-direction: column; 
+        align-items: center;
+        gap: 50px;
+    }
+
+    .place-order-left, 
+    .place-order-right {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0; 
+    }
+
+    .place-order-left .multi-fields {
+        margin-left: 0; 
+        margin-right: 0;
+    }
+
+    .place-order-left .fields {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .place-order-left .multi-fields input {
+        width: 100% !important; 
+        margin-right: 0;
+    }
+}

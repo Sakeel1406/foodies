@@ -1,0 +1,185 @@
+/* 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+:root {
+    --primary-color: rgb(39, 94, 109);
+    --secondary-bg: rgb(245, 242, 243);
+    --border-color: rgb(166, 195, 203);
+    --toastify-color-dark-teal: rgb(39, 94, 109);
+    --toastify-color-success: var(--toastify-color-dark-teal);
+    --toastify-color-progress-default: var(--toastify-color-dark-teal);
+    --toastify-color-progress-success: var(--toastify-color-dark-teal);
+    --toastify-text-color-light: rgb(39, 94, 109); 
+    --toastify-border-radius: 8px;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+/* --- LAYOUT STRUCTURE --- */
+/* .app-container {
+    width: 100%;
+    margin: 0 auto;
+} */
+
+/* This container sits below the Navbar */
+/* .app-content, .admin-main-container {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 100vh;
+} */
+
+/* Main Page Content (Orders, List, Add) */
+/* .main-content-area, .admin-content-area {
+    flex-grow: 1; 
+    min-width: 0;
+    padding: 40px;
+    background-color: #fcfcfc;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 0;
+} */
+
+/* --- TOASTIFY CUSTOMIZATION --- */
+/* .Toastify__toast--success {
+    background: var(--primary-color);
+    border-left: 5px solid #8ac5d6; 
+    color: #fff; 
+}
+
+.Toastify__toast--success .Toastify__close-button,
+.Toastify__toast--success .Toastify__toast-icon {
+    color: #fff;
+} */ 
+
+
+/* --- GLOBAL RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+/* --- LAYOUT STRUCTURE --- */
+.app-content {
+    display: flex;
+    align-items: flex-start; /* Keeps sidebar sticky while content scrolls */
+    width: 100%;
+}
+
+/* Apply this to the container holding your <Routes /> or Order pages */
+.content-area {
+    margin-top: 70px;   /* Push down below Navbar */
+    margin-left: max(18%, 200px); /* Push right past Sidebar */
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.main-content-area {
+    flex-grow: 1; /* This pushes the content to fill the rest of the screen */
+    min-width: 0; /* Prevents large tables/grids from pushing the sidebar off-screen */
+    padding: 40px;
+    background-color: #fcfcfc;
+    min-height: 100vh;
+}
+
+/* Toastify Styling Variables */
+:root {
+    --toastify-color-dark-teal: rgb(39, 94, 109);
+    --toastify-color-success: var(--toastify-color-dark-teal);
+    --toastify-text-color-light: #fff; 
+    --toastify-border-radius: 8px;
+}
+
+.Toastify__toast--success {
+    background: var(--toastify-color-dark-teal);
+    color: white;
+}
+
+
+
+/* --- RESPONSIVE DESIGN (MEDIA QUERIES) --- */
+
+/* Tablets and Small Desktops */
+@media (max-width: 1050px) {
+    .main-content-area, .admin-content-area {
+        padding: 25px;
+    }
+}
+
+/* Mobile Perspective Fix (Icons only Sidebar) */
+@media (max-width: 900px) {
+    .main-content-area {
+        padding: 20px; 
+    }
+    
+    /* Sidebar text disappears to save space for the Order table/list */
+    .sidebar p {
+        display: none;
+    }
+}
+
+/* Full Mobile Navigation (Bottom Nav) */
+@media (max-width: 600px) {
+    .app-content, .admin-main-container {
+        flex-direction: column; /* Stacks vertically */
+    }
+
+    .main-content-area, .admin-content-area {
+        width: 100%;
+        padding: 15px;
+        padding-bottom: 90px; /* Prevents bottom nav from covering content */
+    }
+
+    /* Target sidebar behavior when it's acting as a mobile menu */
+    .sidebar {
+        width: 100% !important;
+        min-width: 100% !important;
+        height: auto !important;
+        position: fixed !important;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        z-index: 100;
+        background-color: white;
+        border-right: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+    }
+
+    .sidebar-options {
+        flex-direction: row !important;
+        padding: 10px !important;
+        justify-content: space-around;
+        gap: 5px;
+    }
+
+    .sidebar-option {
+        border-radius: 5px !important;
+        padding: 8px !important;
+        border: none !important; 
+    }
+}

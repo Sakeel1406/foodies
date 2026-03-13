@@ -1,0 +1,140 @@
+.order-item {
+    width: 128%;
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 30px;
+    border: 1px solid rgb(37, 94, 109);
+    padding: 12px;
+    margin: 50px 0px;
+    font-size: 14px;
+    color: #505050;
+    background-color: rgb(215, 229, 233); 
+    transition: all 0.3s ease;
+}
+
+
+.cancel-order-btn {
+    padding: 8px;
+    background-color: rgb(215, 229, 233); 
+    color: rgb(37, 94, 109); 
+    border: 1px solid rgb(37, 94, 109);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.cancel-order-btn:hover {
+    background-color: rgb(37, 94, 109);
+    color: rgb(215, 229, 233);
+}
+
+
+.order-item.cancelled-bg {
+    background-color: rgb(241, 243, 243); 
+    border: 1px solid rgb(36, 86, 100);
+    opacity: 0.8;
+}
+
+.order-item.cancelled-bg img {
+    filter: grayscale(1);
+}
+
+.order-item-food, .order-item-name {
+    font-weight: 600;
+}
+
+.order-item-name {
+    margin-top: 30px;
+    margin-bottom: 5px;
+    color: rgb(37, 94, 109);
+}
+
+.order-item-address {
+    margin-bottom: 10px;
+    color: rgb(53, 116, 131);
+}
+
+.order-item-food {
+    font-weight: 400;
+    color: rgb(25, 65, 74);
+}
+
+.order-item-phone {
+    color: rgb(53, 116, 131);
+}
+
+.order-item-items{
+    color: rgb(25, 65, 74);
+}
+
+.order-amount {
+    font-weight: 600;
+    color: rgb(37, 94, 109);
+}
+.order-item select {
+    background-color: rgb(220, 231, 234);
+    border: 1px solid rgb(37, 94, 109);
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    cursor: pointer;
+    color: rgb(37, 94, 109);
+}
+
+.order-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+
+}
+.admin-btn {    
+    background-color: rgb(220, 231, 234);
+    border: 1px solid rgb(37, 94, 109);
+    border-radius: 4px;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    cursor: pointer;
+    color: rgb(37, 94, 109);
+}
+
+.order-item img {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+}
+.admin-cancel-btn{
+    padding: 8px 12px;
+    background-color: rgb(215, 229, 233); 
+    color: rgb(37, 94, 109); 
+    border: 1px solid rgb(37, 94, 109);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.order-page {
+    flex-grow: 1; /* Take up all remaining space next to sidebar */
+    padding: 40px;
+    background-color: #fcfcfc;
+}
+@media (max-width:1000px) {
+    .order-item {
+        font-size: 12px;
+        grid-template-columns: 50px 2fr 1fr;
+        padding: 15px 8px;
+    }
+    .order-item select {
+        padding: 5px;
+        font-size: 12px;
+    }
+    .order-item img {
+        width: 40px;
+    }
+}

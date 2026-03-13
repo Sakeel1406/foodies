@@ -1,0 +1,141 @@
+.explore-menu{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.explore-menu h1{
+    color: rgb(37, 94, 109);
+    font-weight: 450;
+
+}
+.explore-menu-text{
+    max-width: 90%;
+    columns: #808080;
+}
+.explore-menu-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+    margin: 20px 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow-x: scroll;
+}
+.explore-menu-list::-webkit-scrollbar{
+display: none;
+}
+.explore-menu-list-item img{
+    width: 6.0vw;
+    min-height: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+.explore-menu-list-item:hover{
+    transform: scale(1.02);
+}
+.explore-menu-list-item p{
+    margin-top: 10px;
+    color: rgb(64, 132, 149);
+    font-size: max(1.0vw,10px);
+    cursor: pointer;
+
+}
+.explore-menu hr{
+    margin: 10px 0px;
+    height: 2px;
+    background-color: #e2e2e2;
+    border: none;
+}
+.explore-menu-list-item .active{
+    border: 2.5px solid palevioletred;
+    padding: 2px;
+}
+
+.explore-menu-search-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0 20px 0;
+}
+
+.explore-menu-search {
+  width: 100%;
+  padding: 12px 45px 12px 15px; /* right padding for the icon */
+  border-radius: 50px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.explore-menu-search:focus {
+  border-color: rgb(37, 94, 109);
+  box-shadow: 0 4px 10px rgba(37, 94, 109, 0.3);
+}
+
+.explore-menu-search-container svg {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  fill: rgb(37, 94, 109);
+  pointer-events: none; /* allows typing without blocking click */
+}
+
+@media (max-width: 768px) {
+    .login-popup-container {
+        width: 85vw; 
+        padding: 20px 25px;
+        gap: 20px;
+    }
+
+    .login-popup-title h2 {
+        font-size: 1.2rem;
+    }
+
+    .login-popup-inputs {
+        gap: 15px;
+    }
+    .explore-menu-list-item img{
+        width: 12vw;
+    }
+    .login-popup {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    
+}
+}
+
+
+
+@media (max-width: 480px) {
+    .login-popup-container {
+        width: 90vw;
+        padding: 15px 20px;
+    }
+
+    .login-popup-title h2 {
+        font-size: 1rem;
+    }
+
+    .login-popup-inputs input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .login-popup-container button {
+        padding: 12px; 
+        font-size: 14px;
+    }
+
+    .login-popup-condition {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,161 @@
+.food-item{ 
+    width: 100%; 
+    margin: auto; 
+    border-radius: 15px; 
+    transition: 0.3s; 
+    animation: fadeIn 5s;
+}
+
+.food-item:hover{ 
+    background-color: #e0ebf4;
+    transform: scale(1.1);
+    cursor: pointer;
+
+}
+.food-item-image{ 
+    width: 100%; 
+    border-radius: 15px 15px 0px 0px; 
+} 
+.food-item-info{ 
+    padding: 20px; 
+} 
+.food-item-name-rating{ 
+    display: flex; 
+    justify-content: space-between; 
+
+    align-items: center; 
+    margin-bottom: 10px; 
+}
+.food-item-name-rating p{ 
+    font-size: 15px; 
+    font-weight: 500;
+    cursor: pointer; 
+    color: rgb(11, 61, 74);
+} 
+.food-item-name-rating img{ 
+    width: 70px; 
+    cursor: pointer;
+} 
+.food-item-desc{ 
+    color: rgb(3, 98, 124); 
+    font-size: 12px; 
+    cursor: pointer;
+}
+.food-item-price{ 
+    color: palevioletred; 
+    font-size: 22px; 
+    font-weight: 500; 
+    margin: 10px 0px;
+    cursor: pointer; 
+} 
+.food-item-img-container{ 
+    position: relative;
+    color: #5bbad1;
+    
+} 
+
+.food-item-counter:hover{
+    transform: scale(1.01);
+}
+.food-item-img-container .add{ 
+    width: 35px; 
+    position: absolute; 
+    bottom: 10px; 
+    right: 15px; 
+    cursor: pointer; 
+    border-radius: 45%; 
+} 
+.food-item-counter{ 
+    position: absolute; 
+    bottom: 12px; 
+    right: 2px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 4px;
+    padding-top: 0.2px;
+    padding-bottom: 0.2px; 
+    border-radius: 20px; 
+    background-color: #e3eaef;
+    cursor: pointer; 
+}
+.food-item-counter img{
+    width: 25px;
+    
+}
+
+.food-item-name-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.food-item-name-rating p {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.food-item-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.star-filled {
+    color: rgb(3, 98, 124); 
+    font-size: 16px;
+}
+
+.star-empty {
+    color: #d4dddf; 
+    font-size: 16px;
+}
+
+/* .add{
+    border-radius: 20%;
+    color: rgb(37, 94, 109); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    box-shadow: 0 4px 8px rgba(5, 65, 84, 0.2); 
+    transition: background-color 0.3s, transform 0.3s; 
+} */
+
+.add {
+    width: 35px; 
+    height: 35px; 
+    position: absolute; 
+    bottom: 10px; 
+    right: 15px; 
+    cursor: pointer; 
+    border-radius: 25%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none; 
+}
+
+
+.add:hover {
+    background-color: rgb(154, 207, 223); 
+    transform: scale(1.1);
+}
+
+
+.add::before {
+    content: "+";
+    color: white; 
+    font-size: 24px;
+    font-weight: bold;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,172 @@
+.list-add {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: rgb(37, 94, 109);
+}
+
+.list-add p.title {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+
+.list-table {
+    width: 160%;
+    overflow-x: auto;
+}
+
+
+.list-table-format {
+    display: grid;
+    grid-template-columns: 0.6fr 2fr 1fr 1.4fr 1fr 0.6fr;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    border: 1px solid rgb(37, 94, 109);
+    border-bottom: none;
+    font-size: 13px;
+    background-color: white;
+}
+
+
+.list-table-format.title {
+    background-color: rgb(215, 229, 233);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+
+.list-table-format:last-child {
+    border-bottom: 1px solid rgb(37, 94, 109);
+}
+
+
+.list-table-format img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.list-table-format p,
+.list-table-format b {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.price-controls p {
+    margin: 0 5px;
+}
+
+.cursor:hover {
+    color: palevioletred;
+    transition: 0.2s;
+}
+
+.list-table-format {
+    min-height: 60px;
+}
+
+.list-table-format.title b {
+    padding: 8px 0;
+}
+
+.list-table-format .price {
+    text-align: center;
+}  
+.list-table-format .rating {
+    text-align: center;
+} 
+.list-table-format .action {
+    text-align: center;
+}
+.list-table-format .image {
+    text-align: center;
+}
+.list-table-format .name {
+    text-align: left;
+}
+.list-table-format.hide-on-mobile{
+    text-align: center;
+}
+
+
+
+.price-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.price-btn {
+    width: 22px;
+    height: 22px;
+    background-color: rgb(215, 229, 233);
+    color: rgb(37, 94, 109);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.price-btn:hover {
+    background-color: rgb(37, 94, 109);
+    color: white;
+}
+
+
+.rating-stars {
+    display: flex;
+    gap: 4px;
+    font-size: 18px;
+    justify-content: center;
+}
+
+.rating-stars .star {
+    color: #c9d2d4;
+}
+
+.rating-stars .star.filled {
+    color: rgb(37, 94, 109);
+}
+
+
+.cursor {
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.hide-on-mobile {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .list-table-format {
+        grid-template-columns:
+            0.7fr
+            1.6fr
+            1fr;
+        gap: 10px;
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    .price-controls,
+    .rating-stars {
+        justify-content: center;
+    }
+}

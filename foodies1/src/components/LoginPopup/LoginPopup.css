@@ -1,0 +1,182 @@
+.login-popup{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    display: grid;
+
+}
+
+.login-popup-container{
+    place-self: center;
+    width: max(22vw,350px);
+    color: rgb(3, 98, 124);
+    background-color: rgb(240, 210, 220);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: fadeIn 0.5s;
+}
+
+.login-popup-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color:rgb(3, 98, 124);
+}
+
+.login-popup-title h2{
+    text-transform: uppercase;
+}
+
+.login-popup-title img{
+    width: 16px;
+    cursor: pointer;
+
+}
+
+.login-popup-title img:hover{
+    transform: scale(1.08);
+}
+
+.login-popup-inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-popup-inputs input{
+    outline: none;
+    border: 1px solid rgb(3, 98, 124);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.login-popup-inputs:hover{
+    transform: scale(1.002);
+}
+
+.login-popup-container button{
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+    background-color: rgb(3, 98, 124);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.login-popup-container button:hover{
+    transform: scale(1.04);
+}
+
+.login-popup-condition{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    color: rgb(3, 98, 124);
+}
+.login-popup-condition input[type="checkbox"] {
+    accent-color: rgb(3, 98, 124);
+    width: 15px;
+    height: 15px;
+    margin: 0; 
+}
+
+.login-popup p span:hover {
+    transform: scale(1.06);
+    color: rgb(3, 98, 124);
+}
+
+.login-popup p span{
+    color: rgb(2, 72, 92);
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
+
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 50px; 
+}
+
+
+.password-toggle-text {
+    position: absolute;
+    right: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgb(3, 98, 124); 
+    cursor: pointer;
+    user-select: none; 
+}
+
+.password-toggle-text:hover {
+    color: palevioletred;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .login-popup-container {
+        width: 85vw;
+        height: 45vh; 
+        padding: 20px 25px;
+        gap: 20px;
+        position: fixed;
+    }
+
+    .login-popup-title h2 {
+        font-size: 1.2rem;
+    }
+
+    .login-popup-inputs {
+        gap: 15px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .login-popup-container {
+        width: 90vw;
+        height: 50vh;
+        padding: 15px 20px;
+        position: fixed;
+
+    }
+
+    .login-popup-title h2 {
+        font-size: 1rem;
+    }
+
+    .login-popup-inputs input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .login-popup-container button {
+        padding: 12px; 
+        font-size: 14px;
+    }
+
+    .login-popup-condition {
+        font-size: 12px;
+    }
+}
