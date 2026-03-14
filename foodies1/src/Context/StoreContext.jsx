@@ -15,7 +15,6 @@ const StoreContextProvider = (props) => {
   const [promoCode, setPromoCode] = useState("");
 
   // --- API Calls ---
-
   const fetchFoodList = async () => {
     try {
       const response = await axios.get(`${url}/api/food/list`);
@@ -31,11 +30,10 @@ const StoreContextProvider = (props) => {
         headers: { token: authToken },
       });
       if (response.data.success) {
-        setUserData(response.data.userData);
+        setUserData(response.data.user); // corrected from userData
       }
     } catch (error) {
       console.error("Error loading user data:", error);
-      // If profile fetch fails due to auth, logout
       if (error.response?.status === 401) logout();
     }
   };
@@ -54,7 +52,6 @@ const StoreContextProvider = (props) => {
   };
 
   // --- Cart Actions ---
-
   const syncCart = async (endpoint, itemId) => {
     if (!token) return;
     try {
@@ -68,15 +65,15 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  const addToCart = async (itemId) => {
+  const addToCart = (itemId) => {
     setCartItems((prev) => ({
       ...prev,
       [itemId]: (prev[itemId] || 0) + 1,
     }));
-    await syncCart("add", itemId);
+    syncCart("add", itemId); // fire-and-forget
   };
 
-  const removeFromCart = async (itemId) => {
+  const removeFromCart = (itemId) => {
     setCartItems((prev) => {
       const count = (prev[itemId] || 0) - 1;
       if (count <= 0) {
@@ -85,11 +82,10 @@ const StoreContextProvider = (props) => {
       }
       return { ...prev, [itemId]: count };
     });
-    await syncCart("remove", itemId);
+    syncCart("remove", itemId); // fire-and-forget
   };
 
   // --- Authentication ---
-
   const logout = () => {
     setToken("");
     localStorage.removeItem("token");
@@ -100,15 +96,12 @@ const StoreContextProvider = (props) => {
   };
 
   // --- Calculations ---
-
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
-        let itemInfo = food_list.find((product) => product._id === item);
-        if (itemInfo) {
-          totalAmount += itemInfo.price * cartItems[item];
-        }
+        const itemInfo = food_list.find((product) => product._id === item);
+        if (itemInfo) totalAmount += itemInfo.price * cartItems[item];
       }
     }
     return totalAmount;
@@ -120,19 +113,26 @@ const StoreContextProvider = (props) => {
 
   const getFinalTotal = () => {
     const total = getTotalCartAmount();
-    const deliveryFee = total === 0 ? 0 : 20;
+    if (total === 0) return 0;
+    const deliveryFee = 20;
     const discountAmount = discount > 0 ? (total * discount) / 100 : 0;
-    return total > 0 ? total + deliveryFee - discountAmount : 0;
+    return total + deliveryFee - discountAmount;
   };
 
-  // --- Initial Data Load ---
+  // --- Persist cart in localStorage for guest users ---
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   useEffect(() => {
-    async function loadData() {
-      // 1. Always fetch the food list
-      await fetchFoodList();
+    const savedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+    setCartItems(savedCart);
+  }, []);
 
-      // 2. If token exists, fetch user-specific data
+  // --- Initial Data Load ---
+  useEffect(() => {
+    async function loadData() {
+      await fetchFoodList();
       const storedToken = localStorage.getItem("token");
       if (storedToken) {
         setToken(storedToken);
@@ -141,7 +141,7 @@ const StoreContextProvider = (props) => {
       }
     }
     loadData();
-  }, [token]); // Re-runs when token changes (login/logout)
+  }, []); // run only on mount
 
   const contextValue = {
     food_list,
