@@ -1,3 +1,4 @@
+// routes/foodRoute.js
 import express from "express";
 import multer from "multer";
 import { addFood, listFood, removeFood, updatePrice } from "../controllers/foodController.js";
@@ -5,9 +6,9 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Multer Storage with unique filenames
+// Multer storage with unique filenames (server uploads)
 const storage = multer.diskStorage({
-  destination: "uploads",
+  destination: "uploads", // folder in your project
   filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}-${file.originalname}`;
     cb(null, uniqueName);
