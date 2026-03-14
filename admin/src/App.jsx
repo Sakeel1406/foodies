@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 const App = () => {
-  const url = "http://localhost:4000";
+  const url = "https://foodies-backend-nf43.onrender.com";
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   useEffect(() => {

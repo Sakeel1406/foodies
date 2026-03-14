@@ -1,24 +1,25 @@
 import express from "express";
-import { addFood, listFood, removeFood, updatePrice } from "../controllers/foodController.js";
 import multer from "multer";
+import { addFood, listFood, removeFood, updatePrice } from "../controllers/foodController.js";
 import authMiddleware from "../middleware/auth.js";
 
-const foodRouter = express.Router();
+const router = express.Router();
 
-// Image Storage
+// Multer Storage with unique filenames
 const storage = multer.diskStorage({
-    destination: "uploads",
-    filename: (req, file, cb) => {
-        return cb(null, `${Date.now()}${file.originalname}`)
-    }
+  destination: "uploads",
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}-${file.originalname}`;
+    cb(null, uniqueName);
+  }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// API 
-foodRouter.post("/add", authMiddleware, upload.single("image"), addFood);
-foodRouter.get("/list", listFood); 
-foodRouter.post("/remove", authMiddleware, removeFood);
-foodRouter.post("/updateprice", authMiddleware, updatePrice); 
+// Routes
+router.post("/add", authMiddleware, upload.single("image"), addFood);
+router.get("/list", listFood);
+router.post("/remove", authMiddleware, removeFood);
+router.post("/updateprice", authMiddleware, updatePrice);
 
-export default foodRouter;
+export default router;
