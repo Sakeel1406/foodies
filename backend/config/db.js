@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const localURI = "mongodb://127.0.0.1:27017/foodies";
+const localURI = "mongodb+srv://sakeelnoufash_db_user:<db_password>@cluster0.ulkljsn.mongodb.net/foodies";
 
 export const connectDB = async () => {
     try {
