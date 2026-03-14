@@ -1,76 +1,76 @@
 import foodModel from "../models/foodModel.js";
 import fs from 'fs';
 
-// add food item
+// Add a food item
 const addFood = async (req, res) => {
-    let image_filename = `${req.file.filename}`;
+  if (!req.file) return res.json({ success: false, message: "No image uploaded" });
 
-    const food = new foodModel({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        category: req.body.category,
-        image: image_filename,
-        rating: req.body.rating 
-    })
+  const image_filename = req.file.filename;
 
-    try {
-        await food.save();
-        res.json({ success: true, message: "Food Added" })
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
-    }
-}
+  const food = new foodModel({
+    name: req.body.name,
+    description: req.body.description,
+    price: req.body.price,
+    category: req.body.category,
+    image: image_filename,
+    rating: req.body.rating || 0
+  });
 
-// all food list
+  try {
+    await food.save();
+    res.json({ success: true, message: "Food Added", data: food });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error saving food" });
+  }
+};
+
+// List all foods
 const listFood = async (req, res) => {
-    try {
-        const foods = await foodModel.find({});
-        res.json({ success: true, data: foods })
-    } catch (error) {
-        res.json({ success: false, message: "Error" })
-    }
-}
+  try {
+    const foods = await foodModel.find({});
+    res.json({ success: true, data: foods });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error fetching foods" });
+  }
+};
 
-// remove food item
+// Remove a food item
 const removeFood = async (req, res) => {
-    try {
-        const food = await foodModel.findById(req.body.id);
-        // Delete image from uploads folder
-        fs.unlink(`uploads/${food.image}`, () => { });
-        
-        await foodModel.findByIdAndDelete(req.body.id);
-        res.json({ success: true, message: "Food Removed" })
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
-    }
-}
+  try {
+    const food = await foodModel.findById(req.body.id);
+    if (!food) return res.json({ success: false, message: "Food not found" });
 
-// update food price (Increase/Decrease)
+    // Delete image from uploads folder
+    fs.unlink(`uploads/${food.image}`, (err) => {
+      if (err) console.warn("Image not found or already deleted");
+    });
+
+    await foodModel.findByIdAndDelete(req.body.id);
+    res.json({ success: true, message: "Food Removed" });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error removing food" });
+  }
+};
+
+// Update food price (Increase / Decrease)
 const updatePrice = async (req, res) => {
-    try {
-        const { id, type } = req.body;
-        const food = await foodModel.findById(id);
-        
-        if (!food) {
-            return res.json({ success: false, message: "Food not found" });
-        }
+  try {
+    const { id, type } = req.body;
+    const food = await foodModel.findById(id);
+    if (!food) return res.json({ success: false, message: "Food not found" });
 
-        if (type === "add") {
-            food.price += 1;
-        } else if (type === "sub" && food.price > 0) {
-            food.price -= 1;
-        }
+    if (type === "add") food.price += 1;
+    else if (type === "sub" && food.price > 0) food.price -= 1;
 
-        await food.save();
-        res.json({ success: true, message: "Price Updated" });
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error updating price" });
-    }
-}
+    await food.save();
+    res.json({ success: true, message: "Price Updated", data: food });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error updating price" });
+  }
+};
 
-
-export { addFood, listFood, removeFood, updatePrice }
+export { addFood, listFood, removeFood, updatePrice };
