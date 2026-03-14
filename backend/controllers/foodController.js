@@ -1,19 +1,43 @@
+// controllers/foodController.js
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import multer from "multer";
 import foodModel from "../models/foodModel.js";
-import fs from 'fs';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Multer storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "foodies", // optional folder in Cloudinary
+    allowed_formats: ["jpg", "png", "jpeg"],
+    transformation: [{ width: 800, crop: "limit" }],
+  },
+});
+
+const upload = multer({ storage });
+
+// ----------------- Food Controllers -----------------
 
 // Add a food item
 const addFood = async (req, res) => {
   if (!req.file) return res.json({ success: false, message: "No image uploaded" });
 
-  const image_filename = req.file.filename;
+  const image_url = req.file.path; // Cloudinary URL
 
   const food = new foodModel({
     name: req.body.name,
     description: req.body.description,
     price: req.body.price,
     category: req.body.category,
-    image: image_filename,
-    rating: req.body.rating || 0
+    image: image_url,
+    rating: req.body.rating || 0,
   });
 
   try {
@@ -42,10 +66,9 @@ const removeFood = async (req, res) => {
     const food = await foodModel.findById(req.body.id);
     if (!food) return res.json({ success: false, message: "Food not found" });
 
-    // Delete image from uploads folder
-    fs.unlink(`uploads/${food.image}`, (err) => {
-      if (err) console.warn("Image not found or already deleted");
-    });
+    // Delete image from Cloudinary
+    const publicId = food.image.match(/\/([^\/]+)\.\w+$/)[1]; // extract file name from URL
+    await cloudinary.uploader.destroy(`foodies/${publicId}`);
 
     await foodModel.findByIdAndDelete(req.body.id);
     res.json({ success: true, message: "Food Removed" });
@@ -73,4 +96,4 @@ const updatePrice = async (req, res) => {
   }
 };
 
-export { addFood, listFood, removeFood, updatePrice };
+export { addFood, listFood, removeFood, updatePrice, upload };
