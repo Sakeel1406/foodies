@@ -4,6 +4,7 @@ const authMiddleware = (req, res, next) => {
   try {
     let token = req.headers.token;
 
+    // check Authorization header also
     if (!token && req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
     }
@@ -16,7 +17,9 @@ const authMiddleware = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     req.userId = decoded.id;
+
     next();
   } catch (error) {
     return res.status(401).json({
