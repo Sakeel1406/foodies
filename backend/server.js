@@ -1,7 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+<<<<<<< HEAD
 import rateLimit from "express-rate-limit";
+=======
+>>>>>>> 0a311298d6ec06f98250eaedb34d6643d70fc220
 
 import { connectDB } from "./config/db.js";
 
@@ -18,16 +21,19 @@ const PORT = process.env.PORT || 4000;
 // Connect Database
 connectDB();
 
-// Middleware
 app.use(express.json());
 
+<<<<<<< HEAD
 // CORS
+=======
+>>>>>>> 0a311298d6ec06f98250eaedb34d6643d70fc220
 app.use(cors({
   origin: "*",
   methods: ["GET","POST","PUT","DELETE"],
   allowedHeaders: ["Content-Type","Authorization","token"]
 }));
 
+<<<<<<< HEAD
 // Rate Limiter (protect API)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -41,6 +47,10 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // Routes
+=======
+connectDB();
+
+>>>>>>> 0a311298d6ec06f98250eaedb34d6643d70fc220
 app.use("/api/food", foodRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
@@ -51,6 +61,7 @@ app.use("/images", express.static("uploads"));
 
 // Test Route
 app.get("/", (req, res) => {
+<<<<<<< HEAD
   res.send("Foodies API Running 🚀");
 });
 
@@ -61,3 +72,11 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+=======
+  res.send("Foodies API running");
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+>>>>>>> 0a311298d6ec06f98250eaedb34d6643d70fc220
