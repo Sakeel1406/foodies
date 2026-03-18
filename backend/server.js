@@ -5,22 +5,30 @@ import rateLimit from "express-rate-limit";
 import fs from "fs";
 
 import { connectDB } from "./config/db.js";
-
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-
 import errorHandler from "./middleware/errorMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// ✅ Debug env vars on startup
+console.log("=== ENV CHECK ===");
+console.log("CLOUDINARY_KEY:", process.env.CLOUDINARY_API_KEY ? "SET ✅" : "MISSING ❌");
+console.log("CLOUDINARY_SECRET:", process.env.CLOUDINARY_API_SECRET ? "SET ✅" : "MISSING ❌");
+console.log("CLOUDINARY_NAME:", process.env.CLOUDINARY_CLOUD_NAME ? "SET ✅" : "MISSING ❌");
+console.log("MONGO_URI:", process.env.MONGO_URI ? "SET ✅" : "MISSING ❌");
+console.log("JWT_SECRET:", process.env.JWT_SECRET ? "SET ✅" : "MISSING ❌");
+console.log("=================");
 
-app.set('trust proxy', 1);
+// Trust proxy for Render
+app.set("trust proxy", 1);
 
-if (!fs.existsSync("uploads")) {           // ← ADD THIS
-  fs.mkdirSync("uploads", { recursive: true }); // ← ADD THIS
+// Auto-create uploads folder
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads", { recursive: true });
 }
 
 // Connect Database

@@ -18,7 +18,7 @@ const storage = new CloudinaryStorage({
       allowed_formats: ["jpg", "png", "jpeg"],
       transformation: [{ width: 800, crop: "limit" }],
       public_id: `food_${Date.now()}`,
-      invalidate: true,
+      // invalidate: true,
     };
   },
 });
