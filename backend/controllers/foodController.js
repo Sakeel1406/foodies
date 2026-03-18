@@ -126,23 +126,3 @@ const updatePrice = async (req, res) => {
 
 export { addFood, listFood, removeFood, updatePrice, upload };
 
-// Paste this entire block
-const token = localStorage.getItem("token");
-console.log("TOKEN:", token ? "EXISTS ✅" : "NULL ❌");
-
-fetch("https://foodies-backend-nf43.onrender.com/")
-  .then(r => r.text())
-  .then(d => console.log("BACKEND:", d))
-  .catch(() => console.log("BACKEND: DOWN ❌"));
-
-fetch("https://foodies-backend-nf43.onrender.com/api/user/admin-login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ 
-    email: "foodiesofficial82@gmail.com", 
-    password: "test123" 
-  })
-})
-.then(r => r.json())
-.then(d => console.log("LOGIN ROUTE:", d))
-.catch(() => console.log("LOGIN ROUTE: NOT FOUND ❌"));
