@@ -25,15 +25,26 @@ const Add = ({ url }) => {
     setData((prev) => ({ ...prev, rating: value }));
   };
 
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log("Selected file:", file);
+    console.log("File name:", file?.name);
+    console.log("File size:", file?.size);
+    console.log("File type:", file?.type);
+    setImage(file);
+  };
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     setLoading(true);
 
     const token = localStorage.getItem("token");
+    console.log("=== SUBMIT START ===");
     console.log("Token:", token ? "EXISTS ✅" : "NULL ❌");
-    console.log("Image:", image);
+    console.log("Image state:", image);
     console.log("Image size:", image?.size);
     console.log("Image type:", image?.type);
+    console.log("Form data:", data);
 
     if (!token) {
       toast.error("Admin not logged in. Please login again.");
@@ -47,28 +58,39 @@ const Add = ({ url }) => {
       return;
     }
 
-    // ✅ Validate image size — max 5MB
     if (image.size > 5 * 1024 * 1024) {
-      toast.error("Image too large! Maximum size is 5MB");
+      toast.error("Image too large! Maximum 5MB");
       setLoading(false);
       return;
     }
 
-    // ✅ Validate image type
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
     if (!allowedTypes.includes(image.type)) {
-      toast.error("Only JPG and PNG images are allowed!");
+      toast.error("Only JPG and PNG images allowed!");
       setLoading(false);
       return;
     }
 
+    // ✅ Build FormData
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("price", Number(data.price));
     formData.append("category", data.category);
-    formData.append("rating", data.rating);
+    formData.append("rating", Number(data.rating));
     formData.append("image", image);
+
+    // ✅ Debug FormData
+    console.log("=== FORMDATA CHECK ===");
+    console.log("name:", formData.get("name"));
+    console.log("description:", formData.get("description"));
+    console.log("price:", formData.get("price"));
+    console.log("category:", formData.get("category"));
+    console.log("rating:", formData.get("rating"));
+    console.log("image:", formData.get("image"));
+    console.log("image name:", formData.get("image")?.name);
+    console.log("image size:", formData.get("image")?.size);
+    console.log("=====================");
 
     try {
       const response = await axios.post(
@@ -81,10 +103,10 @@ const Add = ({ url }) => {
         }
       );
 
-      console.log("Response:", response.data);
+      console.log("Server response:", response.data);
 
       if (response.data.success) {
-        toast.success("Food item added successfully!");
+        toast.success("Food item added successfully! ✅");
         setData({
           name: "",
           description: "",
@@ -93,15 +115,19 @@ const Add = ({ url }) => {
           rating: 0,
         });
         setImage(null);
+        // ✅ Reset file input
+        document.getElementById("image").value = "";
       } else {
         toast.error(response.data.message || "Failed to add food");
       }
     } catch (error) {
-      console.error("FORM ERROR:", error.response?.data);
-      console.error("FULL ERROR:", error);
+      console.error("=== ERROR ===");
+      console.error("Error message:", error.message);
+      console.error("Server error:", error.response?.data);
+      console.error("Status:", error.response?.status);
       toast.error(
         error.response?.data?.message ||
-        "Failed to add product. Server error."
+        "Failed to add product. Please try again."
       );
     } finally {
       setLoading(false);
@@ -126,7 +152,7 @@ const Add = ({ url }) => {
             id="image"
             hidden
             accept="image/jpeg, image/png, image/jpg"
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={onImageChange}
           />
         </div>
 
@@ -214,7 +240,7 @@ const Add = ({ url }) => {
           </div>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button
           type="submit"
           className="add-btn"
