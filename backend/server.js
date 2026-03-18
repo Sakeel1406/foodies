@@ -16,6 +16,9 @@ import errorHandler from "./middleware/errorMiddleware.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+
+app.set('trust proxy', 1);
+
 if (!fs.existsSync("uploads")) {           // ← ADD THIS
   fs.mkdirSync("uploads", { recursive: true }); // ← ADD THIS
 }
