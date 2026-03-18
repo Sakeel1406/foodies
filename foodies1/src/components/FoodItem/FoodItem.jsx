@@ -14,7 +14,7 @@ const FoodItem = ({ id, name, price, description, image, rating }) => {
 
       <div className="food-item-img-container">
 
-        <img className="food-item-image" src={image} alt={name} />
+        <img className="food-item-image" src={image} alt={name} loading="lazy"/>
 
         {!cartItems[id] ? (
           <img
