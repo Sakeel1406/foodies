@@ -5,85 +5,170 @@ import axios from "axios";
 import "./Verify.css";
 
 const Verify = () => {
-
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { url, token } = useContext(StoreContext);
+  const { url, token, setCartItems } = useContext(StoreContext);
 
   const [status, setStatus] = useState("verifying");
+  const [countdown, setCountdown] = useState(3);
 
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
   const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
-
     const verifyPayment = async () => {
-
-      if (!orderId || !sessionId) {
+      // ✅ If no orderId or sessionId — error
+      if (!orderId) {
         setStatus("error");
-        setTimeout(() => navigate("/cart"), 2000);
+        startCountdown("/cart");
+        return;
+      }
+
+      // ✅ If payment was cancelled
+      if (success === "false") {
+        await axios.post(
+          `${url}/api/order/verify`,
+          { success: false, orderId, session_id: sessionId || "" },
+          { headers: { token } }
+        );
+        setStatus("failed");
+        startCountdown("/cart");
+        return;
+      }
+
+      // ✅ If no session_id
+      if (!sessionId) {
+        setStatus("error");
+        startCountdown("/cart");
         return;
       }
 
       try {
-
         const response = await axios.post(
           `${url}/api/order/verify`,
           {
-            success: success === "true",
+            success: true,
             orderId,
-            session_id: sessionId
+            session_id: sessionId,
           },
-          {
-            headers: { token }
-          }
+          { headers: { token } }
         );
 
         if (response.data.success) {
+          // ✅ Clear cart on success
+          setCartItems({});
+          localStorage.removeItem("cartItems");
           setStatus("success");
-          setTimeout(() => navigate("/myorders"), 2000);
+          startCountdown("/myorders");
         } else {
           setStatus("failed");
-          setTimeout(() => navigate("/cart"), 2000);
+          startCountdown("/cart");
         }
-
       } catch (error) {
-
         console.error("Payment verification failed:", error);
         setStatus("error");
-        setTimeout(() => navigate("/cart"), 2000);
-
+        startCountdown("/cart");
       }
-
     };
 
     verifyPayment();
-
   }, [orderId, sessionId]);
 
-  const getStatusMessage = () => {
+  // ✅ Countdown before redirect
+  const startCountdown = (path) => {
+    let count = 3;
+    const interval = setInterval(() => {
+      count -= 1;
+      setCountdown(count);
+      if (count === 0) {
+        clearInterval(interval);
+        navigate(path);
+      }
+    }, 1000);
+  };
 
-    switch(status){
+  const getStatusMessage = () => {
+    switch (status) {
       case "verifying":
         return "Verifying your payment...";
       case "success":
-        return "Payment successful! Redirecting...";
+        return "Payment successful!";
       case "failed":
-        return "Payment failed. Returning to cart...";
+        return "Payment failed.";
       case "error":
-        return "Verification failed. Returning to cart...";
+        return "Verification error.";
       default:
         return "Processing...";
     }
+  };
 
+  const getSubMessage = () => {
+    switch (status) {
+      case "verifying":
+        return "Please wait, do not close this page.";
+      case "success":
+        return `Redirecting to your orders in ${countdown}s...`;
+      case "failed":
+        return `Returning to cart in ${countdown}s...`;
+      case "error":
+        return `Returning to cart in ${countdown}s...`;
+      default:
+        return "";
+    }
   };
 
   return (
     <div className="verify">
-      <div className={`spinner ${status}`}></div>
-      <p>{getStatusMessage()}</p>
-      <small>Order ID: {orderId ? orderId.slice(-6) : "N/A"}</small>
+      <div className="verify-card">
+
+        {/* Icon */}
+        <div className={`verify-icon ${status}`}>
+          {status === "verifying" && <div className="spinner"></div>}
+          {status === "success" && <span>✓</span>}
+          {status === "failed" && <span>✗</span>}
+          {status === "error" && <span>!</span>}
+        </div>
+
+        {/* Status message */}
+        <h2 className={`verify-title ${status}`}>
+          {getStatusMessage()}
+        </h2>
+
+        {/* Sub message */}
+        <p className="verify-subtitle">
+          {getSubMessage()}
+        </p>
+
+        {/* Order ID */}
+        {orderId && (
+          <p className="verify-orderid">
+            Order ID: #{orderId.slice(-6).toUpperCase()}
+          </p>
+        )}
+
+        {/* Manual redirect buttons */}
+        {status !== "verifying" && (
+          <div className="verify-buttons">
+            {status === "success" ? (
+              <button onClick={() => navigate("/myorders")}>
+                View My Orders
+              </button>
+            ) : (
+              <button onClick={() => navigate("/cart")}>
+                Return to Cart
+              </button>
+            )}
+            <button
+              className="secondary"
+              onClick={() => navigate("/")}
+            >
+              Go to Home
+            </button>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 };
