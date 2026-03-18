@@ -7,7 +7,7 @@ import nodemailer from "nodemailer";
 
 // JWT TOKEN HELPER
 
-const createToken = (id, expires = "24h") => {
+const createToken = (id, expires = "7d") => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: expires
   });

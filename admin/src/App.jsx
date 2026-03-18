@@ -15,14 +15,38 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   useEffect(() => {
-    if (token) localStorage.setItem("token", token);
-    else localStorage.removeItem("token");
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
   }, [token]);
+
+  // ✅ Check token validity on startup
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) {
+      // Verify token is still valid
+      fetch(`${url}/api/user/get-profile`, {
+        headers: { token: savedToken }
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (!d.success) {
+          // Token expired — force re-login
+          localStorage.removeItem("token");
+          setToken("");
+        }
+      })
+      .catch(() => {
+        // Backend down — keep token, try again later
+      });
+    }
+  }, []);
 
   return (
     <div className="app">
       <ToastContainer />
-
       {!token ? (
         <Routes>
           <Route path="/login" element={<Login url={url} setToken={setToken} />} />

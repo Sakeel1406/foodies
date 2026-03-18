@@ -9,7 +9,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ✅ Fixed storage with unique filename every time
+// storage with unique filename every time
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
@@ -75,7 +75,7 @@ const removeFood = async (req, res) => {
       return res.json({ success: false, message: "Food not found" });
     }
 
-    // ✅ Fixed public ID extraction
+    //  public ID extraction
     const urlParts = food.image.split("/");
     const filename = urlParts[urlParts.length - 1].split(".")[0];
     const publicId = `foodies/${filename}`;
