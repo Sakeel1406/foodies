@@ -6,15 +6,14 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
   const url = "https://foodies-backend-nf43.onrender.com";
 
-  // --- State Management ---
   const [food_list, setFoodList] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [userData, setUserData] = useState(null);
   const [discount, setDiscount] = useState(0);
   const [promoCode, setPromoCode] = useState("");
+  const [loading, setLoading] = useState(true); // ✅ loading state
 
-  // --- API Calls ---
   const fetchFoodList = async () => {
     try {
       const response = await axios.get(`${url}/api/food/list`);
@@ -26,11 +25,11 @@ const StoreContextProvider = (props) => {
 
   const fetchUserData = async (authToken) => {
     try {
-      const response = await axios.get(`${url}/api/order/get-profile`, {
+      const response = await axios.get(`${url}/api/user/get-profile`, {
         headers: { token: authToken },
       });
       if (response.data.success) {
-        setUserData(response.data.user); // corrected from userData
+        setUserData(response.data.user);
       }
     } catch (error) {
       console.error("Error loading user data:", error);
@@ -51,7 +50,6 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // --- Cart Actions ---
   const syncCart = async (endpoint, itemId) => {
     if (!token) return;
     try {
@@ -70,7 +68,7 @@ const StoreContextProvider = (props) => {
       ...prev,
       [itemId]: (prev[itemId] || 0) + 1,
     }));
-    syncCart("add", itemId); // fire-and-forget
+    syncCart("add", itemId);
   };
 
   const removeFromCart = (itemId) => {
@@ -82,10 +80,9 @@ const StoreContextProvider = (props) => {
       }
       return { ...prev, [itemId]: count };
     });
-    syncCart("remove", itemId); // fire-and-forget
+    syncCart("remove", itemId);
   };
 
-  // --- Authentication ---
   const logout = () => {
     setToken("");
     localStorage.removeItem("token");
@@ -95,7 +92,6 @@ const StoreContextProvider = (props) => {
     setPromoCode("");
   };
 
-  // --- Calculations ---
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {
@@ -119,29 +115,30 @@ const StoreContextProvider = (props) => {
     return total + deliveryFee - discountAmount;
   };
 
-  // --- Persist cart in localStorage for guest users ---
+  // ✅ Persist cart in localStorage
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
-    setCartItems(savedCart);
-  }, []);
-
-  // --- Initial Data Load ---
+  // ✅ Initial data load
   useEffect(() => {
     async function loadData() {
+      setLoading(true);
       await fetchFoodList();
       const storedToken = localStorage.getItem("token");
       if (storedToken) {
         setToken(storedToken);
         await loadCartData(storedToken);
         await fetchUserData(storedToken);
+      } else {
+        // ✅ Load guest cart from localStorage
+        const savedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+        setCartItems(savedCart);
       }
+      setLoading(false);
     }
     loadData();
-  }, []); // run only on mount
+  }, []);
 
   const contextValue = {
     food_list,
@@ -162,6 +159,7 @@ const StoreContextProvider = (props) => {
     setDiscount,
     promoCode,
     setPromoCode,
+    loading, // ✅ expose loading
   };
 
   return (

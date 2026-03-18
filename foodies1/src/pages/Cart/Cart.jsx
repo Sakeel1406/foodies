@@ -10,23 +10,22 @@ const Cart = () => {
     addToCart,
     removeFromCart,
     food_list,
-    url,
     getTotalCartAmount,
     discount,
     setDiscount,
     setPromoCode,
-    token
+    token,
   } = useContext(StoreContext);
 
   const [promoInput, setPromoInput] = useState("");
   const navigate = useNavigate();
 
   const PROMO_CODES = {
-    "SAVE10": 10,
-    "FOODIE20": 20,
-    "FIRST50": 50,
-    "BINGE5": 5,
-    "SPECIAL15": 15
+    SAVE10: 10,
+    FOODIE20: 20,
+    FIRST50: 50,
+    BINGE5: 5,
+    SPECIAL15: 15,
   };
 
   const subtotal = getTotalCartAmount();
@@ -68,25 +67,15 @@ const Cart = () => {
 
   return (
     <div className="cart">
-      
-      {/* <div className="cart-back-container">
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ← BACK TO MENU
-        </button>
-      </div> */}
-
       {subtotal === 0 ? (
-        /* Empty State: Shown when no items are in cart */
         <div className="empty-cart-message">
-          <img src={url + "/images/empty_cart.png"} alt="" style={{width: "150px", opacity: "0.5"}} />
-          <h2>Your cart is currently empty</h2>
+          <h2>🛒 Your cart is currently empty</h2>
           <p>Browse our menu to add some delicious meals!</p>
           <button className="shop-now-btn" onClick={() => navigate("/")}>
             View Menu
           </button>
         </div>
       ) : (
- 
         <>
           <div className="cart-items">
             <div className="cart-items-title">
@@ -100,19 +89,41 @@ const Cart = () => {
             <hr />
             {food_list.map((item) => {
               if (cartItems[item._id] > 0) {
+
+                // ✅ Fixed image URL — handles both Cloudinary and local
+                const imageUrl =
+                  item.image && item.image.startsWith("http")
+                    ? item.image
+                    : `https://foodies-backend-nf43.onrender.com/images/${item.image}`;
+
                 return (
                   <div key={item._id}>
                     <div className="cart-items-title cart-items-item">
-                      <img src={url + "/images/" + item.image} alt={item.name} />
+                      <img src={imageUrl} alt={item.name} />
                       <p>{item.name}</p>
                       <p>₹{item.price}</p>
                       <div className="cart-quantity-controls">
-                        <span onClick={() => removeFromCart(item._id)} className="cart-q-btn">-</span>
+                        <span
+                          onClick={() => removeFromCart(item._id)}
+                          className="cart-q-btn"
+                        >
+                          -
+                        </span>
                         <p>{cartItems[item._id]}</p>
-                        <span onClick={() => addToCart(item._id)} className="cart-q-btn">+</span>
+                        <span
+                          onClick={() => addToCart(item._id)}
+                          className="cart-q-btn"
+                        >
+                          +
+                        </span>
                       </div>
                       <p>₹{item.price * cartItems[item._id]}</p>
-                      <p onClick={() => removeFromCart(item._id)} className="cross">x</p>
+                      <p
+                        onClick={() => removeFromCart(item._id)}
+                        className="cross"
+                      >
+                        x
+                      </p>
                     </div>
                     <hr />
                   </div>
@@ -138,7 +149,10 @@ const Cart = () => {
                 <hr />
                 {discount > 0 && (
                   <>
-                    <div className="cart-total-details" style={{ color: "green", fontWeight: "500" }}>
+                    <div
+                      className="cart-total-details"
+                      style={{ color: "green", fontWeight: "500" }}
+                    >
                       <p>Discount ({discount}%)</p>
                       <p>-₹{discountAmount.toFixed(2)}</p>
                     </div>
@@ -162,9 +176,14 @@ const Cart = () => {
                     placeholder="Enter Promo Code"
                     value={promoInput}
                     onChange={(e) => setPromoInput(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && handlePromoSubmit()}
                   />
                   <button onClick={handlePromoSubmit}>Submit</button>
                 </div>
+                {/* ✅ Show available promo codes */}
+                <p style={{ fontSize: "12px", color: "#888", marginTop: "8px" }}>
+                  Try: SAVE10 | FOODIE20 | FIRST50
+                </p>
               </div>
             </div>
           </div>
