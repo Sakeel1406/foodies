@@ -25,6 +25,8 @@ const upload = multer({ storage });
 // ADD FOOD
 const addFood = async (req, res) => {
   try {
+        console.log("Body:", req.body);       // ← add this
+    console.log("File:", req.file);
     if (!req.file) {
       return res.json({ success: false, message: "No image uploaded" });
     }

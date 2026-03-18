@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import fs from "fs";
 
 import { connectDB } from "./config/db.js";
 
@@ -14,6 +15,10 @@ import errorHandler from "./middleware/errorMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+if (!fs.existsSync("uploads")) {           // ← ADD THIS
+  fs.mkdirSync("uploads", { recursive: true }); // ← ADD THIS
+}
 
 // Connect Database
 connectDB();
