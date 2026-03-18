@@ -15,7 +15,7 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => {
     return {
       folder: "foodies",
-      allowed_formats: ["jpg", "png", "jpeg"],
+      allowed_formats: ["jpg", "png", "jpeg", "webp"],
       transformation: [{ width: 800, crop: "limit" }],
       public_id: `food_${Date.now()}`,
       // invalidate: true,

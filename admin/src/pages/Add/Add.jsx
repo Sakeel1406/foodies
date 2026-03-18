@@ -64,9 +64,9 @@ const Add = ({ url }) => {
       return;
     }
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg","image/webp"];
     if (!allowedTypes.includes(image.type)) {
-      toast.error("Only JPG and PNG images allowed!");
+      toast.error("Only JPG, PNG and WEBP images allowed!");
       setLoading(false);
       return;
     }
@@ -151,7 +151,7 @@ const Add = ({ url }) => {
             type="file"
             id="image"
             hidden
-            accept="image/jpeg, image/png, image/jpg"
+            accept="image/jpeg, image/png, image/jpg, image/webp"
             onChange={onImageChange}
           />
         </div>
