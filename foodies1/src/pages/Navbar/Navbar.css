@@ -15,7 +15,6 @@
     width: 150px;
 }
 
-
 .navbar-menu {
     display: flex;
     list-style: none;
@@ -43,7 +42,6 @@
     font-weight: 600;
 }
 
-
 .navbar-right {
     display: flex;
     align-items: center;
@@ -65,7 +63,6 @@
     background-color: rgb(231, 237, 239);
 }
 
-
 .navbar-search-icon {
     position: relative;
     cursor: pointer;
@@ -85,27 +82,33 @@
     right: -5px;
 }
 
-
+/* ✅ Desktop profile */
 .navbar-profile {
     position: relative;
 }
 
 .navbar-profile img {
     width: 35px;
+    cursor: pointer;
 }
 
-.navbar-profile:hover {
-    transform: scale(1.0001);
+.profile-desktop {
+    display: block;
+    position: relative;
+}
+
+.profile-desktop img {
+    width: 35px;
 }
 
 .nav-profile-dropdown {
     position: absolute;
     display: none;
-    right: 2;
-    z-index: -1;
+    right: 0;
+    z-index: 999;
 }
 
-.navbar-profile:hover .nav-profile-dropdown {
+.profile-desktop:hover .nav-profile-dropdown {
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -133,7 +136,28 @@
     color: palevioletred;
 }
 
+/* ✅ Mobile profile — horizontal icons */
+.profile-mobile {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
 
+.profile-mobile .mobile-icon {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 0.8;
+}
+
+.profile-mobile .mobile-icon:hover {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* Back button */
 .navbar-back {
     display: flex;
     align-items: center;
@@ -160,12 +184,12 @@
     color: rgb(3, 98, 124);
     text-transform: uppercase;
 }
+
 .navbar-back:hover span {
     color: palevioletred;
 }
 
-   /* HAMBURGER MENU */
-
+/* Hamburger */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -180,12 +204,11 @@
     border-radius: 3px;
 }
 
-
+/* Responsive */
 @media (max-width: 1050px) {
     .navbar .logo {
         width: 120px;
     }
-
     .navbar-menu {
         gap: 15px;
         font-size: 16px;
@@ -234,5 +257,24 @@
 
     .menu-toggle.is-active .bar:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* ✅ Hide desktop profile on mobile */
+    .profile-desktop {
+        display: none;
+    }
+
+    /* ✅ Show horizontal icons on mobile */
+    .profile-mobile {
+        display: flex;
+    }
+
+    .navbar-right {
+        gap: 16px;
+    }
+
+    .navbar button {
+        padding: 8px 16px;
+        font-size: 13px;
     }
 }
