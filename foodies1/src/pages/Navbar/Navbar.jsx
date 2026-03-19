@@ -135,13 +135,9 @@ const Navbar = ({ setShowLogin }) => {
                         </div>
 
                         {/* Mobile */}
+                        {/* ✅ Mobile — only orders and logout icons */}
                         <div className="profile-mobile">
-                            <img
-                                src={assets.profile_icon}
-                                alt="Profile"
-                                className="mobile-icon"
-                            />
-                            <img
+                            <img 
                                 src={assets.bag_icon}
                                 alt="Orders"
                                 className="mobile-icon"
