@@ -1,31 +1,18 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { StoreContext } from '../../Context/StoreContext'
 
 const Navbar = ({ setShowLogin }) => {
+
     const [menu, setMenu] = useState("home");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
 
     const { token, setToken, getTotalItems } = useContext(StoreContext);
+
     const navigate = useNavigate();
     const location = useLocation();
-
-    // Scroll listener to hide/show elements
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setIsScrolled(true);
-                setIsMenuOpen(false); // Mobile menu-va scroll pannum pothu close panniduvom
-            } else {
-                setIsScrolled(false);
-            }
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     const hiddenMenuPaths = ['/cart', '/order', '/myorders', '/verify'];
     const shouldHideMenu = hiddenMenuPaths.includes(location.pathname);
@@ -34,12 +21,15 @@ const Navbar = ({ setShowLogin }) => {
         localStorage.removeItem("token");
         setToken("");
         navigate("/");
+        setIsMenuOpen(false);
     }
 
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
     return (
-        <div className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-            
-            {/* --- Left Side: Logo & Back Button --- */}
+        <div className='navbar'>
+
+            {/* LEFT */}
             <div className='navbar-left'>
                 {location.pathname !== '/' && (
                     <div className="navbar-back" onClick={() => navigate(-1)}>
@@ -52,11 +42,11 @@ const Navbar = ({ setShowLogin }) => {
                 </Link>
             </div>
 
-            {/* --- Center: Menu Toggle (Hamburger) --- */}
+            {/* HAMBURGER */}
             {!shouldHideMenu && (
                 <div
-                    className={`menu-toggle ${isMenuOpen ? 'is-active' : ''} ${isScrolled ? 'hide-nav-items' : ''}`}
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className={`menu-toggle ${isMenuOpen ? 'is-active' : ''}`}
+                    onClick={toggleMenu}
                 >
                     <span className="bar"></span>
                     <span className="bar"></span>
@@ -64,50 +54,105 @@ const Navbar = ({ setShowLogin }) => {
                 </div>
             )}
 
-            {/* --- Center: Navigation Links --- */}
+            {/* MENU */}
             {!shouldHideMenu && (
-                <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''} ${isScrolled ? 'hide-nav-items' : ''}`}>
+                <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
                     <li>
-                        <Link to='/' onClick={() => { setMenu("home"); setIsMenuOpen(false); }} className={menu === "home" ? "active" : ""}>Home</Link>
+                        <Link
+                            to='/'
+                            onClick={() => { setMenu("home"); setIsMenuOpen(false); }}
+                            className={menu === "home" ? "active" : ""}
+                        >
+                            Home
+                        </Link>
                     </li>
+
                     <li>
-                        <a href='#explore-menu' onClick={() => { setMenu("menu"); setIsMenuOpen(false); }} className={menu === "menu" ? "active" : ""}>Menu</a>
+                        <a
+                            href='#explore-menu'
+                            onClick={() => { setMenu("menu"); setIsMenuOpen(false); }}
+                            className={menu === "menu" ? "active" : ""}
+                        >
+                            Menu
+                        </a>
                     </li>
+
                     <li>
-                        <a href='#app-download' onClick={() => { setMenu("mobile-app"); setIsMenuOpen(false); }} className={menu === "mobile-app" ? "active" : ""}>Mobile-App</a>
+                        <a
+                            href='#app-download'
+                            onClick={() => { setMenu("mobile-app"); setIsMenuOpen(false); }}
+                            className={menu === "mobile-app" ? "active" : ""}
+                        >
+                            Mobile-App
+                        </a>
                     </li>
+
                     <li>
-                        <a href='#footer' onClick={() => { setMenu("contact-us"); setIsMenuOpen(false); }} className={menu === "contact-us" ? "active" : ""}>Contact Us</a>
+                        <a
+                            href='#footer'
+                            onClick={() => { setMenu("contact-us"); setIsMenuOpen(false); }}
+                            className={menu === "contact-us" ? "active" : ""}
+                        >
+                            Contact Us
+                        </a>
                     </li>
                 </ul>
             )}
 
-            {/* --- Right Side: Cart & Profile/Login --- */}
+            {/* RIGHT */}
             <div className="navbar-right">
+
+                {/* Cart icon */}
                 <div className="navbar-search-icon">
-                    <Link to='/cart'><img src={assets.basket_icon} alt="Cart" /></Link>
-                    {getTotalItems() > 0 && <div className="dot">{getTotalItems()}</div>}
+                    <Link to='/cart'>
+                        <img src={assets.basket_icon} alt="Cart" />
+                    </Link>
+                    {getTotalItems() > 0 && (
+                        <div className="dot">{getTotalItems()}</div>
+                    )}
                 </div>
 
+                {/* Auth */}
                 {!token ? (
-                    <button className={isScrolled ? 'hide-nav-items' : ''} onClick={() => setShowLogin(true)}>Sign in</button>
+                    <button onClick={() => setShowLogin(true)}>Sign in</button>
                 ) : (
-                    <div className={`navbar-profile ${isScrolled ? 'hide-nav-items' : ''}`}>
-                        
-                        {/* Desktop View: Normal Dropdown */}
+                    <div className="navbar-profile">
+
+                        {/* Desktop */}
                         <div className="profile-desktop">
                             <img src={assets.profile_icon} alt='Profile' />
                             <ul className="nav-profile-dropdown">
-                                <li onClick={() => navigate('/myorders')}><img src={assets.bag_icon} alt="" /><p>Orders</p></li>
+                                <li onClick={() => navigate('/myorders')}>
+                                    <img src={assets.bag_icon} alt="Orders" />
+                                    <p>Orders</p>
+                                </li>
                                 <hr />
-                                <li onClick={logout}><img src={assets.logout_icon} alt="" /><p>Logout</p></li>
+                                <li onClick={logout}>
+                                    <img src={assets.logout_icon} alt="Logout" />
+                                    <p>Logout</p>
+                                </li>
                             </ul>
                         </div>
 
-                        {/* Mobile View: Horizontal Bag & Logout Icons */}
-                        <div className="profile-mobile-icons">
-                            <img src={assets.bag_icon} alt="Orders" onClick={() => navigate('/myorders')} className="nav-icon-sm" />
-                            <img src={assets.logout_icon} alt="Logout" onClick={logout} className="nav-icon-sm" />
+                        {/* Mobile */}
+                        <div className="profile-mobile">
+                            <img
+                                src={assets.profile_icon}
+                                alt="Profile"
+                                className="mobile-icon"
+                            />
+                            <img
+                                src={assets.bag_icon}
+                                alt="Orders"
+                                className="mobile-icon"
+                                onClick={() => navigate('/myorders')}
+                            />
+                            <img
+                                src={assets.logout_icon}
+                                alt="Logout"
+                                className="mobile-icon"
+                                onClick={logout}
+                            />
                         </div>
 
                     </div>
