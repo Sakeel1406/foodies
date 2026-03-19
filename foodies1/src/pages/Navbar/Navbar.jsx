@@ -7,18 +7,18 @@ import { StoreContext } from '../../Context/StoreContext'
 const Navbar = ({ setShowLogin }) => {
     const [menu, setMenu] = useState("home");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false); // New state for scroll
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const { token, setToken, getTotalItems } = useContext(StoreContext);
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Scroll Listener
+    // Scroll listener to hide/show elements
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 50) {
                 setIsScrolled(true);
-                setIsMenuOpen(false); // Auto-close mobile menu on scroll
+                setIsMenuOpen(false); // Mobile menu-va scroll pannum pothu close panniduvom
             } else {
                 setIsScrolled(false);
             }
@@ -38,6 +38,8 @@ const Navbar = ({ setShowLogin }) => {
 
     return (
         <div className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+            
+            {/* --- Left Side: Logo & Back Button --- */}
             <div className='navbar-left'>
                 {location.pathname !== '/' && (
                     <div className="navbar-back" onClick={() => navigate(-1)}>
@@ -50,7 +52,7 @@ const Navbar = ({ setShowLogin }) => {
                 </Link>
             </div>
 
-            {/* Menu Toggle - Hidden when scrolled */}
+            {/* --- Center: Menu Toggle (Hamburger) --- */}
             {!shouldHideMenu && (
                 <div
                     className={`menu-toggle ${isMenuOpen ? 'is-active' : ''} ${isScrolled ? 'hide-nav-items' : ''}`}
@@ -62,7 +64,7 @@ const Navbar = ({ setShowLogin }) => {
                 </div>
             )}
 
-            {/* Main Links - Hidden when scrolled */}
+            {/* --- Center: Navigation Links --- */}
             {!shouldHideMenu && (
                 <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''} ${isScrolled ? 'hide-nav-items' : ''}`}>
                     <li>
@@ -80,6 +82,7 @@ const Navbar = ({ setShowLogin }) => {
                 </ul>
             )}
 
+            {/* --- Right Side: Cart & Profile/Login --- */}
             <div className="navbar-right">
                 <div className="navbar-search-icon">
                     <Link to='/cart'><img src={assets.basket_icon} alt="Cart" /></Link>
@@ -89,8 +92,10 @@ const Navbar = ({ setShowLogin }) => {
                 {!token ? (
                     <button className={isScrolled ? 'hide-nav-items' : ''} onClick={() => setShowLogin(true)}>Sign in</button>
                 ) : (
-                    <div className="navbar-profile">
-                        <div className={`profile-desktop ${isScrolled ? 'hide-nav-items' : ''}`}>
+                    <div className={`navbar-profile ${isScrolled ? 'hide-nav-items' : ''}`}>
+                        
+                        {/* Desktop View: Normal Dropdown */}
+                        <div className="profile-desktop">
                             <img src={assets.profile_icon} alt='Profile' />
                             <ul className="nav-profile-dropdown">
                                 <li onClick={() => navigate('/myorders')}><img src={assets.bag_icon} alt="" /><p>Orders</p></li>
@@ -98,7 +103,13 @@ const Navbar = ({ setShowLogin }) => {
                                 <li onClick={logout}><img src={assets.logout_icon} alt="" /><p>Logout</p></li>
                             </ul>
                         </div>
-                        {/* Mobile Icons usually stay visible for UX, but you can add hide-nav-items here too if needed */}
+
+                        {/* Mobile View: Horizontal Bag & Logout Icons */}
+                        <div className="profile-mobile-icons">
+                            <img src={assets.bag_icon} alt="Orders" onClick={() => navigate('/myorders')} className="nav-icon-sm" />
+                            <img src={assets.logout_icon} alt="Logout" onClick={logout} className="nav-icon-sm" />
+                        </div>
+
                     </div>
                 )}
             </div>
